@@ -83,6 +83,8 @@ public:
   boolean visibleBeforeStreaming = true;
 
   boolean freezeDisplay = false;
+  boolean showFrolicMessage = true;
+  ScrollMode scrollTypes[4] = { bounceReverse, wrapForwardFromLeft, bounceForward, wrapForward };
 
   void logMenuUpdate() {
     Serial.print(F("MenuItem["));
@@ -103,19 +105,20 @@ public:
   }
 
   uint32_t randomNumberBetween(uint32_t  from, uint32_t to) {
-    return (rand() * (to - from)) / RAND_MAX;
+    return random(from, to);
   }
 
   void initScrollingLayer() {
+
     scrollingLayer.enableColorCorrection(true);
     scrollingLayer.setStartOffsetFromLeft(0);
-    scrollingLayer.setMode(bounceForward);
+    scrollingLayer.setMode(scrollTypes[randomNumberBetween(0, 3)]);
     scrollingLayer.setSpeed(40 + rand() * 40 / RAND_MAX);
     scrollingLayer.setFont(gohufont11b);
     scrollingLayer.setColor(rgb24{
-      randomNumberBetween(128, 255),
-      randomNumberBetween(128, 255),
-      randomNumberBetween(128, 255)
+      randomNumberBetween(1, 255),
+      randomNumberBetween(1, 255),
+      randomNumberBetween(1, 255)
     });
     scrollingLayer.setOffsetFromTop(randomNumberBetween(2, 7));
 
@@ -162,16 +165,17 @@ public:
           restartAndJumpToApp();
         }
 
-        EVERY_N_SECONDS(30) {
-          initScrollingLayer();
-        }
-
         EVERY_N_SECONDS(15) {
-          stopScrollingLayer();
+          if (showFrolicMessage) {
+            stopScrollingLayer();
+            showFrolicMessage = false;
+          } else {
+            initScrollingLayer();
+            showFrolicMessage = true;
+          }
         }
 
         updateStatusLed();
-
         updateForeground(menuItems, menuItemsCount);
 
         InputCommand command = readCommand(defaultHoldDelay);

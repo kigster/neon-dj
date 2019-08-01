@@ -382,7 +382,7 @@ void setup()
     applyDemoMode();
   }
 
-  clockDisplay.setColor(rgb24{ 180, 0, 0 });
+  clockDisplay.setColor(rgb24{ 0, 0, 0 });
 
   if (MATRIX_WIDTH > 32) {
     clockDisplay.adjustX(5);

@@ -28,4 +28,4 @@
 #define POWER_PIN A13
 #define RESET_PIN 32
 
-#define SCROLLING_MESSAGE "Frolic 2019....      Frolic X!         That's Roman 10 For Y'all :)"
+#define SCROLLING_MESSAGE "<< frolic X >>           Be Awesome, No Drama!             Welcome to 2019"
